@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import React from 'react'
 
 interface taskI {
@@ -9,11 +9,13 @@ interface taskI {
 const Task = (): JSX.Element => {
   const [task, setTask] = useState<string>('')
   const [taskAll, setTaskAll] = useState<taskI[]>([])
+  const taskInput = useRef<HTMLInputElement>(null)
 
   const handleSubmit = (submit: React.FormEvent<HTMLFormElement>) => {
     submit.preventDefault()
     addTaskItem(task)
     setTask('')
+    taskInput.current?.focus()
   }
 
   const addTaskItem = (name: string) => {
@@ -44,14 +46,15 @@ const Task = (): JSX.Element => {
 
   return (
     <>
-      <h1>Este es un {task}</h1>
+      <h1>Ingresa tu tarea</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           onChange={(ev) => setTask(ev.target.value)}
           value={task}
+          ref={taskInput}
         />
-        <button>Submit</button>
+        <button>Ingresar</button>
       </form>
       {taskAll.map((e: taskI, i: number) => {
         return (
